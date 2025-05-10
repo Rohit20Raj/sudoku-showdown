@@ -50,49 +50,56 @@ const SudokuBoard = ({ board, setBoard, isSolved, unfilledCells }) => {
         padding: "40px",
         backgroundColor: "#FFFFFF",
         borderRadius: "12px",
-        height: 'fit-content',
+        height: "fit-content",
       }}
     >
       <Box>
         {board.map((row, rowIndex) => (
           <Box key={rowIndex} display="flex">
-            {row.map((cell, cellIndex) => (
-              <Box
-                key={cellIndex}
-                width="60px"
-                height="60px"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                marginLeft={
-                  cellIndex > 0 ? (cellIndex % 3 === 0 ? "16px" : "4px") : 0
-                }
-                marginTop={
-                  rowIndex > 0 ? (rowIndex % 3 === 0 ? "16px" : "4px") : 0
-                }
-                sx={{
-                  backgroundColor: "rgba(217, 225, 238, 1)",
-                  borderRadius: "4px",
-                }}
-              >
-                <input
-                  type="text"
-                  value={cell === 0 ? "" : cell}
-                  onChange={(e) => handleInputChange(e, rowIndex, cellIndex)}
-                  onKeyDown={(e) => handleKeyDown(e, rowIndex, cellIndex)}
-                  ref={(el) => (inputRefs.current[rowIndex][cellIndex] = el)}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    textAlign: "center",
-                    fontSize: "24px",
-                    outline: "none",
-                    borderRadius: "4px"
+            {row.map((cell, cellIndex) => {
+              const isUnfilled = unfilledCells.some(
+                ([r, c]) => r === rowIndex && c === cellIndex
+              );
+
+              return (
+                <Box
+                  key={cellIndex}
+                  width="60px"
+                  height="60px"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  marginLeft={
+                    cellIndex > 0 ? (cellIndex % 3 === 0 ? "16px" : "4px") : 0
+                  }
+                  marginTop={
+                    rowIndex > 0 ? (rowIndex % 3 === 0 ? "16px" : "4px") : 0
+                  }
+                  sx={{
+                    background: isSolved && isUnfilled ? "radial-gradient(rgba(39, 154, 220, 0.5), rgba(39, 154, 220, 1))" : "rgba(217, 225, 238, 1)",
+                    borderRadius: "4px",
                   }}
-                  maxLength={1}
-                />
-              </Box>
-            ))}
+                >
+                  <input
+                    type="text"
+                    value={cell === 0 ? "" : cell}
+                    onChange={(e) => handleInputChange(e, rowIndex, cellIndex)}
+                    onKeyDown={(e) => handleKeyDown(e, rowIndex, cellIndex)}
+                    ref={(el) => (inputRefs.current[rowIndex][cellIndex] = el)}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      textAlign: "center",
+                      fontSize: "24px",
+                      outline: "none",
+                      borderRadius: "4px",
+                    }}
+                    maxLength={1}
+                    disabled={isSolved}
+                  />
+                </Box>
+              );
+            })}
           </Box>
         ))}
       </Box>

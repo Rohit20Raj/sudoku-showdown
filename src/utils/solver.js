@@ -1,12 +1,15 @@
 export const solver = (board, unfilledCells) => {
-  console.table(unfilledCells)
-  let sudoku = [...board];
-
+  let sudoku = board.map(row => [...row]);
   let solved = { isSolved: false };
 
   recursive(sudoku, unfilledCells, 0, solved);
 
-  return sudoku;
+  // Check if solution was found
+  // if (!solved.isSolved) {
+  //   throw new Error("Invalid Sudoku: No solution exists.");
+  // }
+
+  return !solved.isSolved ? board : sudoku;
 };
 
 const recursive = (sudoku, unfilledCells, index, solved) => {
@@ -22,14 +25,13 @@ const recursive = (sudoku, unfilledCells, index, solved) => {
     if (isSafe(sudoku, row, col, i)) {
       sudoku[row][col] = i;
       recursive(sudoku, unfilledCells, index + 1, solved);
-      if (!solved.isSolved) {
-        sudoku[row][col] = 0;
-      }
+      if (solved.isSolved) return; // Stop recursion if solved
+      sudoku[row][col] = 0;
     }
   }
 };
 
-const isSafe = (sudoku, row, col, num) => {
+export const isSafe = (sudoku, row, col, num) => {
   // check row
   for (let i = 0; i < sudoku[row].length; i++) {
     if (sudoku[row][i] === num) return false;
@@ -42,12 +44,10 @@ const isSafe = (sudoku, row, col, num) => {
 
   // check 3x3 grid
   let startRow = Math.floor(row / 3) * 3;
-  let endRow = Math.ceil(row / 3) * 3;
   let startCol = Math.floor(col / 3) * 3;
-  let endCol = Math.ceil(col / 3) * 3;
 
-  for (let i = startRow; i < endRow; i++) {
-    for (let j = startCol; j < endCol; j++) {
+  for (let i = startRow; i < startRow + 3; i++) {
+    for (let j = startCol; j < startCol + 3; j++) {
       if (sudoku[i][j] === num) return false;
     }
   }
@@ -55,10 +55,11 @@ const isSafe = (sudoku, row, col, num) => {
   return true;
 };
 
-function create2DArray(n) {
+
+export function create2DArray(n, value) {
   let arr = new Array(n);
   for (let i = 0; i < n; i++) {
-    arr[i] = new Array(n);
+    arr[i] = new Array(n).fill(value);
   }
   return arr;
 }
