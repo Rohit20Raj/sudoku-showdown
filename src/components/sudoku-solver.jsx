@@ -26,11 +26,18 @@ const SudokuSolver = () => {
     [0, 0, 0, 4, 1, 9, 0, 0, 5],
     [0, 0, 0, 0, 8, 0, 0, 7, 9],
   ]);
+  const [isSolved, setIsSolved] = useState(false);
+  const [unfilledCells, setUnfilledCells] = useState([]);
 
   return (
     <Stack direction="row" spacing={4} width={"100%"} justifyContent={"center"}>
-      <SudokuBoard board={board} setBoard={setBoard} />
-      <ButtonGroups board={board} setBoard={setBoard} />
+      <SudokuBoard board={board} setBoard={setBoard} isSolved={isSolved} unfilledCells={unfilledCells} />
+      <ButtonGroups
+        board={board}
+        setBoard={setBoard}
+        setIsSolved={setIsSolved}
+        setUnfilledCells={setUnfilledCells}
+      />
     </Stack>
   );
 };

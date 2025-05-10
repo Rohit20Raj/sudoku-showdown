@@ -2,7 +2,7 @@ import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import { solver } from "../../utils/solver";
 
-const ButtonGroups = ({ board, setBoard }) => {
+const ButtonGroups = ({ board, setBoard, setIsSolved, setUnfilledCells }) => {
   return (
     <Stack direction={"column"} spacing={4}>
       <Stack direction={"row"} spacing={2}>
@@ -13,7 +13,20 @@ const ButtonGroups = ({ board, setBoard }) => {
             height: "80px",
             aspectRatio: "4",
           }}
-          onClick={() => setBoard(solver(board))}
+          onClick={() => {
+            let unfilledCells = [];
+            for(let i=0; i<board.length; i++){
+              for(let j=0; j<board[i].length; j++){
+                if(board[i][j] === 0) {
+                  let newArr = [i, j];
+                  unfilledCells = [...unfilledCells, newArr]
+                }
+              }
+            }
+            setBoard(solver(board, unfilledCells));
+            setUnfilledCells(unfilledCells);
+            setIsSolved(true);
+          }}
         >
           <Typography
             sx={{

@@ -1,7 +1,7 @@
 import { Box, Stack } from "@mui/material";
 import React, { useRef } from "react";
 
-const SudokuBoard = ({ board, setBoard }) => {
+const SudokuBoard = ({ board, setBoard, isSolved, unfilledCells }) => {
   const inputRefs = useRef([...Array(9)].map(() => Array(9).fill(null)));
 
   const handleInputChange = (e, rowIndex, cellIndex) => {
@@ -86,9 +86,8 @@ const SudokuBoard = ({ board, setBoard }) => {
                     height: "100%",
                     textAlign: "center",
                     fontSize: "24px",
-                    border: "none",
                     outline: "none",
-                    backgroundColor: "transparent",
+                    borderRadius: "4px"
                   }}
                   maxLength={1}
                 />
