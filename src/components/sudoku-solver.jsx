@@ -31,7 +31,7 @@ const SudokuSolver = () => {
   const [unfilledCells, setUnfilledCells] = useState([]);
 
   return (
-    <Stack direction="row" spacing={4} width={"100%"} justifyContent={"center"}>
+    <Stack id="puzzle-container">
       <SudokuBoard
         board={board}
         setBoard={setBoard}

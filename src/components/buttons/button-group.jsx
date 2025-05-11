@@ -12,47 +12,39 @@ const ButtonGroups = ({
   setIsSolvable,
 }) => {
   return (
-    <Stack direction={"column"} spacing={4}>
-      <Stack direction={"row"} spacing={2}>
-        <Button
-          variant="contained"
-          color="success"
-          disabled={isSolved}
-          sx={{
-            height: "80px",
-            aspectRatio: "4",
-            "&.Mui-disabled": {
-              background: "rgba(46, 125, 50, 0.5)",
-              color: "rgba(255, 255, 255, 1)",
-            },
-          }}
-          onClick={() => {
-            let unfilledCells = [];
-            for (let i = 0; i < board.length; i++) {
-              for (let j = 0; j < board[i].length; j++) {
-                if (board[i][j] === 0) {
-                  let newArr = [i, j];
-                  unfilledCells = [...unfilledCells, newArr];
-                }
+    <Stack spacing={4} id="button-group">
+      <Button
+        variant="contained"
+        color="success"
+        disabled={isSolved}
+        id="buttons-custom"
+        sx={{
+          "&.Mui-disabled": {
+            background: "rgba(46, 125, 50, 0.5)",
+            color: "rgba(255, 255, 255, 1)",
+          },
+        }}
+        onClick={() => {
+          let unfilledCells = [];
+          for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+              if (board[i][j] === 0) {
+                let newArr = [i, j];
+                unfilledCells = [...unfilledCells, newArr];
               }
             }
-            const solvedSudoku = solver(board, unfilledCells);
-            setBoard(solvedSudoku);
-            setUnfilledCells(unfilledCells);
-            deepCompare(solvedSudoku, board)
-              ? setIsSolvable(false)
-              : setIsSolved(true);
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: "32px",
-            }}
-          >
-            Solve
-          </Typography>
-        </Button>
-        {/* <Button
+          }
+          const solvedSudoku = solver(board, unfilledCells);
+          setBoard(solvedSudoku);
+          setUnfilledCells(unfilledCells);
+          deepCompare(solvedSudoku, board)
+            ? setIsSolvable(false)
+            : setIsSolved(true);
+        }}
+      >
+        <Typography id="buttons-custom-font">Solve</Typography>
+      </Button>
+      {/* <Button
           variant="outlined"
           color="success"
           sx={{
@@ -70,26 +62,16 @@ const ButtonGroups = ({
             Validate
           </Typography>
         </Button> */}
-      </Stack>
       <Button
         variant="contained"
         color="error"
+        id="buttons-custom"
         onClick={() => {
           setBoard(create2DArray(9, 0));
           setIsSolved(false);
         }}
-        sx={{
-          height: "80px",
-          aspectRatio: "4",
-        }}
       >
-        <Typography
-          sx={{
-            fontSize: "32px",
-          }}
-        >
-          Reset Sudoku
-        </Typography>
+        <Typography id="buttons-custom-font">Reset Sudoku</Typography>
       </Button>
     </Stack>
   );
