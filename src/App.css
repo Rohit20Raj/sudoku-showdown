@@ -1,15 +1,28 @@
 .App {
   display: flex;
+  flex-direction: column;
   flex: 1;
-  height: 100dvh;
   padding: 20px;
   background-color: rgba(39, 154, 220, 1);
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 40px;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+#heading {
+  font-size: 54px;
+  color: rgba(39, 154, 220, 1);
+  -webkit-text-stroke: 2px rgb(40, 44, 52);
+}
+#sub-heading {
+  color: rgb(40, 44, 52);
+  font-size: large;
+  text-align: center;
 }
 
 #puzzle-container {
@@ -64,10 +77,18 @@ input:focus {
 }
 
 @media only screen and (max-width: 767px) {
+  .App {
+    height: 100dvh;
+    gap: 80px;
+  }
+  #heading {
+    font-size: 8vw;
+    white-space: nowrap;
+  }
   #puzzle-container {
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: min-content;
   }
   
