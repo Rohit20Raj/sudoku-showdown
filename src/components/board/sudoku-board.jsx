@@ -1,7 +1,7 @@
 import { Box, Stack } from "@mui/material";
 import React, { useRef } from "react";
 
-const SudokuBoard = ({ board, setBoard }) => {
+const SudokuBoard = ({ board, setBoard, isSolved, unfilledCells }) => {
   const inputRefs = useRef([...Array(9)].map(() => Array(9).fill(null)));
 
   const handleInputChange = (e, rowIndex, cellIndex) => {
@@ -44,35 +44,31 @@ const SudokuBoard = ({ board, setBoard }) => {
       inputRefs.current[rowIndex + 1][0]?.focus();
     }
   };
+
   return (
-    <Stack
-      sx={{
-        padding: "40px",
-        backgroundColor: "#FFFFFF",
-        borderRadius: "12px",
-        height: 'fit-content',
-      }}
-    >
-      <Box>
-        {board.map((row, rowIndex) => (
-          <Box key={rowIndex} display="flex">
-            {row.map((cell, cellIndex) => (
+    <Stack id="sudoku-board-wrapper">
+      {board.map((row, rowIndex) => (
+        <Box key={rowIndex} display="flex">
+          {row.map((cell, cellIndex) => {
+            const isUnfilled = unfilledCells.some(
+              ([r, c]) => r === rowIndex && c === cellIndex
+            );
+
+            return (
               <Box
                 key={cellIndex}
-                width="60px"
-                height="60px"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
+                id="sudoku-board-cell"
                 marginLeft={
-                  cellIndex > 0 ? (cellIndex % 3 === 0 ? "16px" : "4px") : 0
+                  cellIndex > 0 ? (cellIndex % 3 === 0 ? 2 : 0.5) : 0
                 }
                 marginTop={
-                  rowIndex > 0 ? (rowIndex % 3 === 0 ? "16px" : "4px") : 0
+                  rowIndex > 0 ? (rowIndex % 3 === 0 ? 2 : 0.5) : 0
                 }
                 sx={{
-                  backgroundColor: "rgba(217, 225, 238, 1)",
-                  borderRadius: "4px",
+                  background:
+                    isSolved && isUnfilled
+                      ? "radial-gradient(rgba(39, 154, 220, 0.5), rgba(39, 154, 220, 1))"
+                      : "rgba(217, 225, 238, 1)",
                 }}
               >
                 <input
@@ -81,22 +77,14 @@ const SudokuBoard = ({ board, setBoard }) => {
                   onChange={(e) => handleInputChange(e, rowIndex, cellIndex)}
                   onKeyDown={(e) => handleKeyDown(e, rowIndex, cellIndex)}
                   ref={(el) => (inputRefs.current[rowIndex][cellIndex] = el)}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    textAlign: "center",
-                    fontSize: "24px",
-                    border: "none",
-                    outline: "none",
-                    backgroundColor: "transparent",
-                  }}
                   maxLength={1}
+                  disabled={isSolved}
                 />
               </Box>
-            ))}
-          </Box>
-        ))}
-      </Box>
+            );
+          })}
+        </Box>
+      ))}
     </Stack>
   );
 };
