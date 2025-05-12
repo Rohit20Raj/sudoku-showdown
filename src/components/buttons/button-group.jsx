@@ -11,6 +11,29 @@ const ButtonGroups = ({
   setUnfilledCells,
   setIsSolvable,
 }) => {
+  const handleSolve = () => {
+    let unfilledCells = [];
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        if (board[i][j] === 0) {
+          let newArr = [i, j];
+          unfilledCells = [...unfilledCells, newArr];
+        }
+      }
+    }
+    const solvedSudoku = solver(board, unfilledCells);
+    setBoard(solvedSudoku);
+    setUnfilledCells(unfilledCells);
+    deepCompare(solvedSudoku, board)
+      ? setIsSolvable(false)
+      : setIsSolved(true);
+  }
+
+  const handleReset = () => {
+    setBoard(create2DArray(9, 0));
+    setIsSolved(false);
+  }
+
   return (
     <Stack spacing={4} id="button-group">
       <Button
@@ -24,23 +47,7 @@ const ButtonGroups = ({
             color: "rgba(255, 255, 255, 1)",
           },
         }}
-        onClick={() => {
-          let unfilledCells = [];
-          for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[i].length; j++) {
-              if (board[i][j] === 0) {
-                let newArr = [i, j];
-                unfilledCells = [...unfilledCells, newArr];
-              }
-            }
-          }
-          const solvedSudoku = solver(board, unfilledCells);
-          setBoard(solvedSudoku);
-          setUnfilledCells(unfilledCells);
-          deepCompare(solvedSudoku, board)
-            ? setIsSolvable(false)
-            : setIsSolved(true);
-        }}
+        onClick={handleSolve}
       >
         <Typography id="buttons-custom-font">Solve</Typography>
       </Button>
@@ -66,10 +73,7 @@ const ButtonGroups = ({
         variant="contained"
         color="error"
         id="buttons-custom"
-        onClick={() => {
-          setBoard(create2DArray(9, 0));
-          setIsSolved(false);
-        }}
+        onClick={handleReset}
       >
         <Typography id="buttons-custom-font">Reset Sudoku</Typography>
       </Button>
