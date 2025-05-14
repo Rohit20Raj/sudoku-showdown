@@ -2,6 +2,7 @@ import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import { create2DArray, solver } from "../../utils/solver";
 import { deepCompare } from "../../utils/deep-compare";
+import { triggerEvent } from "../../firebase/trigger-event";
 
 const ButtonGroups = ({
   board,
@@ -27,11 +28,22 @@ const ButtonGroups = ({
     deepCompare(solvedSudoku, board)
       ? setIsSolvable(false)
       : setIsSolved(true);
+
+    triggerEvent("SOLVE_PUZZLE_BUTTON_CLICKED", {
+      clicked: "solve",
+      unsolved: board,
+      solved: solvedSudoku
+    })
   }
 
   const handleReset = () => {
     setBoard(create2DArray(9, 0));
     setIsSolved(false);
+
+    triggerEvent("RESET_PUZZLE_BUTTON_CLICKED", {
+      clicked: "reset",
+      puzzle: board
+    })
   }
 
   return (
